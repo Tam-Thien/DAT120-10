@@ -10,14 +10,35 @@ class emne:
        
         
 class studieplan:
-    def __init__(self, ID, tittel, liste):
+    def __init__(self, ID, tittel):
         self.ID = ID
         self.tittel = tittel
-        self.liste = liste
-        
+        for i in range(1,7):
+            self.semester[i] = []
+        #den vil da printe ut slik:
+        """
+        self.semester1 = []
+        self.semester2 = []
+        self.semester3 = []
+        self.semester4 = []
+        self.semester5 = []
+        self.semester6 = [] 
+        """
+
     def __str__(self):
-        return f"{self.tittel}, {self.ID}, {self.liste}" 
-        
+        return f"{self.ID}, {self.tittel}, \n self.semester[1] \n self.semester[2] \n self.semester[3] \n self.semester[4] \n self.semester[5] \n self.semester[6]"
+
+    def fjern(self, nr, emne): #Metode for å fjrene et emne fra studieplanen.
+        self.semester[nr].remove(emne)
+        print(f"Fjernet {emne} fra semester {nr}.")
+
+    def legg_emne_i_studieplan(self, emne): #Metode for å legge til et emne i studieplanen.
+        try:
+            nr = int(input("Oppgi semester (1-6):"))
+        except ValueError("Velg et semester 1-6.")
+        self.semester[nr].append(emne)
+        print(f"La til {emne} i studieplanen.")
+
 class emneregister:
     def __init__(self):
         self._emner = []
@@ -30,17 +51,18 @@ class emneregister:
         
     def legg_emne_i_register(self, emne): #Metode for å legge emnet i register (1)
         self._emner.append(emne)
+        print(f"{emne} lagt til i emneregister.")
         
     def finn(self, kode): #Metode for å referere til et emneobjekt, i stedet for å bruke liste-indeks
         for fag in self._emner:
             if fag.kode == emne.kode:
                 return fag
         
-    def fjern(self, kode): #Metode for å slette opprettet emne
+    def slett(self, kode): #Metode for å slette opprettet emne
         for fag in self._emner:
             if fag.kode == emne.kode:
                 del fag
-
+                print(f"Slettet {fag}.")
 
 
 emneliste = emneregister() #Globalt emneregister-objekt, kan i teorien lage flere registere, men trengs ikke her
@@ -51,13 +73,15 @@ def meny_liste():
     print("\n________Meny:_______")   
     print("01. Lag et nytt emne.")
     print("02. Legg til et emne i studieplanen.")
-    print("03. Skriv ut en liste over alle registrerte emner.")
-    print("04. Skriv ut studieplanen med hvilke emner som er i hvert semester.")
-    print("05. Sjekk om studieplanen er gyldig eller ikke.")
-    print("06. Lagre emnene og studieplanen til fil")
-    print("07. Les inn emnene og studieplanen fra fil.")
-    print("08. Avslutt.")      
-
+    print("03. Fjern et emne fra en studieplan.")
+    print("04. Skriv ut ei liste over alle registrerte emner.")
+    print("05. Lag en ny tom studieplan.")
+    print("06. Skriv ut en studieplan med hvilke emner som er i hvert semester.")
+    print("07. Sjekk om en studieplan er gyldig eller ikke.")
+    print("08. Finn hvilke studieplaner som bruker et oppgitt emne.")    
+    print("09. Lagre emnene og studieplanene til fil.")
+    print("10. Les inn emnene og studieplanene fra fil.")  
+    print("11. Avslutt.")
 
 
 def valg1():
@@ -80,14 +104,14 @@ def valg1():
     emnet = emne(emnekode, semester, navn, studiepoeng)
     emneliste.legg_emne_i_register(emnet)
 
-
+def valg2():
+    return
 
 def main():
     while True: #MENY   
         meny_liste() #skriver ut meny valgene 
         
         valg = int(input("\nVelg et tall fra menyen: ")) #sikkrer at input tallet blir heltall så hele programmet ikke bare krasjer...  
-        #midlertidig kommentert ut valg 9-14.
         if valg == 1: #Lag et nytt emne
             valg1()
         elif valg == 2: #Legg til et emne i en studieplan
@@ -108,7 +132,7 @@ def main():
             valg9()
         elif valg == 10:
             valg10()
-        elif valg == 11: #Finn hvilke studieplaner som bruker et oppgitt emne
+        elif valg == 11: #Avslutt
             print("Avslutter programmet")
             break
         else:
