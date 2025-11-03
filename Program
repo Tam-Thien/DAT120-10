@@ -80,25 +80,31 @@ def main():
         
         valg = int(input("\nVelg et tall fra menyen: ")) #sikkrer at input tallet blir heltall så hele programmet ikke bare krasjer...  
         #midlertidig kommentert ut valg 9-14.
-        if valg == 1:
+        if valg == 1: #Lag et nytt emne
             valg1()
-        elif valg == 2: 
+        elif valg == 2: #Legg til et emne i en studieplan
             valg2()
-        elif valg == 3:
+        elif valg == 3: #Fjern et emne fra en studieplan
             valg3()
-        elif valg == 4:
+        elif valg == 4: #Skriv ut ei liste over alle registrerte emner
             valg4()
-        elif valg == 5:
+        elif valg == 5: #Lag en ny tom studieplan
             valg5()
-        elif valg == 6:
+        elif valg == 6: #Skriv ut en studieplan med hvilke emner som er i hvert semester
             valg6()
-        elif valg == 7:
+        elif valg == 7: #Sjekk om en studieplan er gyldig eller ikke
             valg7()
-        elif valg == 8:
+        elif valg == 8: #Finn hvilke studieplaner som bruker et oppgitt emne
+            valg8()
+        elif valg == 9:
+            valg9()
+        elif valg == 10:
+            valg10()
+        elif valg == 11: #Finn hvilke studieplaner som bruker et oppgitt emne
             print("Avslutter programmet")
             break
         else:
-            print("Feil, velg et tall mellom 1 og 8.") #husk å endre fra 8 til 14 når det implimenteres. 
+            print("Feil, velg et tall mellom 1 og 11.") #husk å endre fra 8 til 14 når det implimenteres. 
             #Slettet de andre, siden koden crashet da jeg kommenterte ut de andre.
     
     
