@@ -1,0 +1,124 @@
+class emne:
+    def __init__(self, kode, semester, navn, stp):
+        self.kode = kode
+        self.semester = semester
+        self.navn = navn
+        self.stp = stp
+        
+    def __str__(self):
+        return f"{self.kode}, {self.semester}, {self.navn}, {self.stp}"           
+       
+        
+class studieplan:
+    def __init__(self, ID, tittel, liste):
+        self.ID = ID
+        self.tittel = tittel
+        self.liste = liste
+        
+    def __str__(self):
+        return f"{self.ID}, {self.tittel}, {self.liste}" 
+        
+class emneregister:
+    def __init__(self):
+        self._emner = []
+        
+    def __str__(self):
+        tekst = ""
+        for emne in self._emner:
+            tekst += str(emne) + "\n" 
+            return tekst
+        
+    def legg_til(self, emne):
+        self._emner.append(emne)
+        
+    def finn(self, kode):
+        for fag in self._emner:
+            if fag.kode == emne.kode:
+                return fag
+        
+    def fjern(self, kode):
+        for fag in self._emner:
+            if fag.kode == emne.kode:
+                del fag
+
+emneliste = emneregister()
+ 
+def meny_liste():
+    print("\n________Meny:_______")   
+    print("01. Lag et nytt emne.")
+    print("02. Legg til et emne i studieplanen.")
+    print("03. Skriv ut en liste over alle registrerte emner.")
+    print("04. Skriv ut studieplanen med hvilke emner som er i hvert semester.")
+    print("05. Sjekk om studieplanen er gyldig eller ikke.")
+    print("06. Lagre emnene og studieplanen til fil")
+    print("07. Les inn emnene og studieplanen fra fil.")
+    print("08. Avslutt.")      
+    
+def valg1():
+    
+
+    emnekode = input("Skriv inn emnekode: ")
+    navn = input("Skriv inn navn på emnet: ")
+    semester_input = int(input("Skriv inn 1 for høst eller 2 for vår: ")) # kan lage try except blokk for å få prøve tall igjen hvis ikke int.
+
+    if semester_input == 1: #grunnen til at det står sesong og ikke semester som i høst/vår semester er for å unngå overlapp i navn og forvirring siden i oppgave 2 trenger man å bruke "semester" i koden.
+        semester = "Høst"
+    elif semester_input == 2:
+        semester = "Vår"
+    else:
+        print("vennligst velg 1 (for høst) eller 2 (for vår)") # Lag en try except blokk senere..............    
+    try:
+        studiepoeng = int(input("Skriv inn studie poeng: "))
+    except ValueError:
+        print("Skriv et tall")
+        return
+    
+    emnet = emne(kode, semester, navn, stp)
+        emneliste.legg_til(emnet)
+
+
+
+
+
+
+
+
+
+
+
+def main():
+    while True: #MENY   
+        meny_liste() #skriver ut meny valgene 
+        
+        valg = int(input("\nVelg et tall fra menyen: ")) #sikkrer at input tallet blir heltall så hele programmet ikke bare krasjer...  
+        #midlertidig kommentert ut valg 9-14.
+        if valg == 1: #Lag et nytt emne
+            valg1()
+        elif valg == 2: #Legg til et emne i en studieplan
+            valg2()
+        elif valg == 3: #Fjern et emne fra en studieplan
+            valg3()
+        elif valg == 4: #Skriv ut ei liste over alle registrerte emner
+            valg4()
+        elif valg == 5: #Lag en ny tom studieplan
+            valg5()
+        elif valg == 6: #Skriv ut en studieplan med hvilke emner som er i hvert semester
+            valg6()
+        elif valg == 7: #Sjekk om en studieplan er gyldig eller ikke
+            valg7()
+        elif valg == 8: #Finn hvilke studieplaner som bruker et oppgitt emne
+            valg8()
+        elif valg == 9:
+            valg9()
+        elif valg == 10:
+            valg10()
+        elif valg == 11: #Finn hvilke studieplaner som bruker et oppgitt emne
+            print("Avslutter programmet")
+            break
+        else:
+            print("Feil, velg et tall mellom 1 og 11.") #husk å endre fra 8 til 14 når det implimenteres. 
+            #Slettet de andre, siden koden crashet da jeg kommenterte ut de andre.
+    
+    
+    
+main()
