@@ -43,15 +43,6 @@ class emneregister:
 
 emneliste = emneregister()
 
-def valg1():
-    kode = input("Skriv emnekode")
-    semester = input("Skriv semester")
-    navn = input("Skriv navn på fag")
-    stp = input("Skriv antall studiepoeng")
-    emnet = emne(kode, semester, navn, stp)
-    emneliste.legg_til(emnet)
-      #test
-
 def meny_liste():
     print("\n________Meny:_______")   
     print("01. Lag et nytt emne.")
@@ -63,6 +54,26 @@ def meny_liste():
     print("07. Les inn emnene og studieplanen fra fil.")
     print("08. Avslutt.")      
     
+def valg1():
+    kode = input("Skriv emnekode")
+    semester = input("Skriv semester")
+    navn = input("Skriv navn på fag")
+    stp = input("Skriv antall studiepoeng")
+    emnet = emne(kode, semester, navn, stp)
+    emneliste.legg_til(emnet)
+      #test
+
+
+
+
+
+
+
+
+
+
+
+
 def main():
     while True: #MENY   
         meny_liste() #skriver ut meny valgene 
