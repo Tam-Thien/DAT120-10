@@ -44,10 +44,10 @@ class emneregister:
 emneliste = emneregister()
 
 def valg1():
-    kode = input()
-    semester = input()
-    navn = input()
-    stp = input()
+    kode = input("Skriv emnekode")
+    semester = input("Skriv semester")
+    navn = input("Skriv navn på fag")
+    stp = input("Skriv antall studiepoeng")
     emnet = emne(kode, semester, navn, stp)
     emneliste.legg_til(emnet)
       #test
