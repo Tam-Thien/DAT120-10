@@ -6,7 +6,7 @@ class emne:
         self.stp = stp
         
     def __str__(self):
-        return f"{self.kode}, {self.semester}, {self.navn}, {self.stp}"           
+        return f"{self.navn}, {self.kode}, {self.semester}, {self.stp}"           
        
         
 class studieplan:
@@ -16,33 +16,37 @@ class studieplan:
         self.liste = liste
         
     def __str__(self):
-        return f"{self.ID}, {self.tittel}, {self.liste}" 
+        return f"{self.tittel}, {self.ID}, {self.liste}" 
         
 class emneregister:
     def __init__(self):
         self._emner = []
         
-    def __str__(self):
+    def __str__(self): #Metode for å vise alle oprettede emner (4)
         tekst = ""
         for emne in self._emner:
             tekst += str(emne) + "\n" 
             return tekst
         
-    def legg_til(self, emne):
+    def legg_emne_i_register(self, emne): #Metode for å legge emnet i register (1)
         self._emner.append(emne)
         
-    def finn(self, kode):
+    def finn(self, kode): #Metode for å referere til et emneobjekt, i stedet for å bruke liste-indeks
         for fag in self._emner:
             if fag.kode == emne.kode:
                 return fag
         
-    def fjern(self, kode):
+    def fjern(self, kode): #Metode for å slette opprettet emne
         for fag in self._emner:
             if fag.kode == emne.kode:
                 del fag
 
-emneliste = emneregister()
- 
+
+
+emneliste = emneregister() #Globalt emneregister-objekt, kan i teorien lage flere registere, men trengs ikke her
+
+
+
 def meny_liste():
     print("\n________Meny:_______")   
     print("01. Lag et nytt emne.")
@@ -53,24 +57,28 @@ def meny_liste():
     print("06. Lagre emnene og studieplanen til fil")
     print("07. Les inn emnene og studieplanen fra fil.")
     print("08. Avslutt.")      
-    
+
+
+
 def valg1():
-    kode = input("Skriv emnekode")
-    semester = input("Skriv semester")
-    navn = input("Skriv navn på fag")
-    stp = input("Skriv antall studiepoeng")
-    emnet = emne(kode, semester, navn, stp)
-    emneliste.legg_til(emnet)
-      #test
+    emnekode = input("Skriv inn emnekode: ")
+    navn = input("Skriv inn navn på emnet: ")
+    semester_input = int(input("Skriv inn 1 for høst eller 2 for vår: ")) # kan lage try except blokk for å få prøve tall igjen hvis ikke int.
 
-
-
-
-
-
-
-
-
+    if semester_input == 1: #grunnen til at det står sesong og ikke semester som i høst/vår semester er for å unngå overlapp i navn og forvirring siden i oppgave 2 trenger man å bruke "semester" i koden.
+        semester = "H"
+    elif semester_input == 2:
+        semester = "V"
+    else:
+        print("vennligst velg 1 (for høst) eller 2 (for vår)") # Lag en try except blokk senere..............    
+    try:
+        studiepoeng = int(input("Skriv inn studie poeng: "))
+    except ValueError:
+        print("Skriv et tall")
+        return
+    
+    emnet = emne(emnekode, semester, navn, studiepoeng)
+    emneliste.legg_emne_i_register(emnet)
 
 
 
@@ -104,9 +112,6 @@ def main():
             print("Avslutter programmet")
             break
         else:
-            print("Feil, velg et tall mellom 1 og 11.") #husk å endre fra 8 til 14 når det implimenteres. 
-            #Slettet de andre, siden koden crashet da jeg kommenterte ut de andre.
-    
-    
+            print("Feil, velg et tall mellom 1 og 11.")
     
 main()
