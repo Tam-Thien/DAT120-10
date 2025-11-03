@@ -51,7 +51,7 @@ def valg1():
     emnet = emne(kode, semester, navn, stp)
     emneliste.legg_til(emnet)
       #test
-
+ 
 def meny_liste():
     print("\n________Meny:_______")   
     print("01. Lag et nytt emne.")
