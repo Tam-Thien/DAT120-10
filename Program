@@ -42,15 +42,6 @@ class emneregister:
                 del fag
 
 emneliste = emneregister()
-
-def valg1():
-    kode = input()
-    semester = input()
-    navn = input()
-    stp = input()
-    emnet = emne(kode, semester, navn, stp)
-    emneliste.legg_til(emnet)
-      #test
  
 def meny_liste():
     print("\n________Meny:_______")   
