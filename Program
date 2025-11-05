@@ -7,7 +7,7 @@ class emne:
         
     def __str__(self):
         return f"{self.navn}, {self.kode}, {self.semester}, {self.stp}"           
-       
+    #test 987654321------------------------------------------   
         
 class studieplan:
     def __init__(self, ID, tittel):
