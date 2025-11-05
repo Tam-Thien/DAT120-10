@@ -138,7 +138,7 @@ def valg7():
         print("Studieplanen er gyldig. Hvert semester har 30 studiepoeng.")
     else:
         print("Studieplanen er ikke gyldig.")
-        for semester, poeng in ugyldige_semestere:
+        for semester in ugyldige_semestere:
             print(f"Semester {semester} har {poeng} studiepoeng.")
 
 def main():
