@@ -6,15 +6,14 @@ class emne:
         self.stp = stp
         
     def __str__(self):
-        return f"{self.navn}, {self.kode}, {self.semester}, {self.stp}"           
-    #test 987654321------------------------------------------   
+        return f"{self.navn}, {self.kode}, {self.semester}, {self.stp}"            
         
 class studieplan:
     def __init__(self, ID, tittel):
         self.ID = ID
         self.tittel = tittel
-        for i in range(1,7):
-            self.semester[i] = []
+        self.semestre = {i:[] for i in range(1,7)}
+
         #den vil da printe ut slik:
         """
         self.semester1 = []
@@ -35,7 +34,7 @@ class studieplan:
     def legg_emne_i_studieplan(self, emne): #Metode for å legge til et emne i studieplanen.
         try:
             nr = int(input("Oppgi semester (1-6):"))
-        except ValueError("Velg et semester 1-6.")
+        except: ValueError("Velg et semester 1-6.")
         self.semester[nr].append(emne)
         print(f"La til {emne} i studieplanen.")
 
@@ -64,9 +63,8 @@ class emneregister:
                 del fag
                 print(f"Slettet {fag}.")
 
-
 emneliste = emneregister() #Globalt emneregister-objekt, kan i teorien lage flere registere, men trengs ikke her
-
+studieplan_dict = {}
 
 
 def meny_liste():
@@ -104,8 +102,44 @@ def valg1():
     emnet = emne(emnekode, semester, navn, studiepoeng)
     emneliste.legg_emne_i_register(emnet)
 
-def valg2():
-    return
+def valg5():
+    ID = input("Skriv inn ID:")
+    tittel = input("Skriv inn tittel:")
+    studieplan_ny = studieplan(ID, tittel)
+    studieplan_dict[tittel] =  studieplan_ny
+    print(f"Opprettet studieplan {tittel}.")
+
+def valg6():
+    print(studieplan_dict)
+    plan = str(input("Velg studieplan:"))
+    print(f"\n{plan}:")
+    for key, value in studieplan_dict[plan].semestre.items():
+        print(f"\nSemester {key}: {value}")
+
+def valg7():
+    plan = input("Sjekk studieplan:")
+    print("\nSjekker om studieplanen er gyldig...")
+    ugyldige_semestere = []
+
+    for key, value in studieplan_dict[plan].semestre.items():
+        total_studiepoeng = 0
+        for emne in value:
+            #studieplan_dict[plan][stp] poeng = 
+            poeng = emne.stp
+            if emne:
+                total_studiepoeng += emne["studiepoeng"]
+            else:
+                print("Semesteret er tomt.")
+        
+        if total_studiepoeng != 30:
+            ugyldige_semestere.append(key)
+
+    if not ugyldige_semestere:
+        print("Studieplanen er gyldig. Hvert semester har 30 studiepoeng.")
+    else:
+        print("Studieplanen er ikke gyldig.")
+        for semester in ugyldige_semestere:
+            print(f"Semester {semester} har {poeng} studiepoeng.")
 
 def main():
     while True: #MENY   
