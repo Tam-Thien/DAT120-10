@@ -54,8 +54,9 @@ class emneregister:
         
     def finn(self, kode): #Metode for å referere til et emneobjekt, i stedet for å bruke liste-indeks
         for fag in self._emner:
-            if fag.kode == emne.kode:
+            if fag.kode == kode:
                 return fag
+        return None
         
     def slett(self, kode): #Metode for å slette opprettet emne
         for fag in self._emner:
@@ -101,6 +102,85 @@ def valg1():
     
     emnet = emne(emnekode, semester, navn, studiepoeng)
     emneliste.legg_emne_i_register(emnet)
+    
+def valg2():
+    if not studieplan_dict:
+        print("Finnes ingen studieplaner lag en først takk :-)")
+        return
+    if not emneliste._emner :
+        print("Ops da, du har visst ikke laget noen emner enda")
+        return
+    print("Studieplaner")
+    for plan_navn in studieplan_dict:
+        print(f"---{plan_navn}")
+        
+    plan_navn = input("Velg studieplan")
+    if plan_navn not in studieplan_dict:
+        print("studieplanenen finnes ikke :-(")
+        return
+    
+    emnekode = input("skriv inn emnekoden du ønsker å legge til")
+    emne_obj = emneliste.finn(emnekode)
+    if not emne_obj:
+        print("fant ikke emnet du lette etter :-(")
+        return
+    try:
+        semester = int(input("Hvilket semester 1-6"))
+        if semester < 1 or semester >6:
+            raise ValueError
+    except ValueError:
+        print("Skriv et gyldig tall takk")
+        return
+    studieplan_dict[plan_navn].semestre[semester].append(emne_obj)
+    print(f"da ble {emne_obj.navn} ({emne_obj.kode}) lagt til i semester {semester} på {plan_navn}.")
+
+def valg3():
+    if not studieplan_dict:
+        print("Du må nok lage en studieplan før du planlegger å fjerne emner")
+        return
+    
+    print("Studieplaner")
+    for plan_navn in studieplan_dict:
+        print(f"---{plan_navn}")
+        
+    plan_navn = input("Velg studieplan")
+    if plan_navn not in studieplan_dict:
+        print("studieplanenen finnes ikke :-(")
+        return
+    try:
+        semester = int(input("Hvilket semester 1-6"))
+        if semester < 1 or semester >6:
+            raise ValueError
+    except ValueError:
+        print("Skriv et gyldig tall takk")
+        return
+    plan = studieplan_dict[plan_navn]
+    emnelister_i_semester = plan.semestre[semester]
+    
+    if not emnelister_i_semester:
+        print("Det er visst ingen emner i dette semesteret")
+        return
+    print(f"emner i semester {semester}")
+    for emne in emnelister_i_semester:
+        print(f"---{emne.kode} {emne.navn}")
+        
+    emnekode = input("Skriv inn koden til det emnet du vil fjerne takk")
+    
+    for emne in emnelister_i_semester :
+        if emne.kode == emnekode:
+            emnelister_i_semester.remove(emne)
+            print(f"fjernet {emne.navn}")
+            return
+        
+    print("fant ikke emnet du lette etter")
+    
+def valg4():
+    if not emneliste._emner:
+        print("ingen emner er lagt til enda :(")
+        return
+    print("Registrerte emner")
+    for emne in emneliste._emner:
+        print(f"{emne.kode} {emne.navn} {emne.stp} studiepoeng {emne.semester}")
 
 def valg5():
     ID = input("Skriv inn ID:")
