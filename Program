@@ -188,17 +188,11 @@ def valg4():
         print(f"{emne.kode} {emne.navn} {emne.stp} studiepoeng {emne.semester}")
 
 def valg5():
-    while True:
-        
-        ID = input("Skriv inn ID: ")
-        if type(ID) != int:
-            raise ValueError("Skriv et helt tall som ID.")
-        
-        tittel = input("Skriv inn tittel: ")
-        studieplan_ny = studieplan(ID, tittel)
-        studieplan_dict[tittel] =  studieplan_ny
-        print(f"Opprettet studieplan {tittel}.")
-        break
+    ID = input("Skriv inn ID: ")
+    tittel = input("Skriv inn tittel: ")
+    studieplan_ny = studieplan(ID, tittel)
+    studieplan_dict[tittel] =  studieplan_ny
+    print(f"Opprettet studieplan {tittel}.")
 
 def valg6():
     while True:    
