@@ -87,9 +87,9 @@ def meny_liste():
 def valg1():
     emnekode = input("Skriv inn emnekode: ")
     navn = input("Skriv inn navn på emnet: ")
-    semester_input = int(input("Skriv inn 1 for høst eller 2 for vår: ")) # kan lage try except blokk for å få prøve tall igjen hvis ikke int.
+    semester_input = int(input("Skriv inn 1 for høst eller 2 for vår: ")) 
 
-    if semester_input == 1: #grunnen til at det står sesong og ikke semester som i høst/vår semester er for å unngå overlapp i navn og forvirring siden i oppgave 2 trenger man å bruke "semester" i koden.
+    if semester_input == 1: 
         semester = "H"
     elif semester_input == 2:
         semester = "V"
@@ -115,8 +115,8 @@ def valg2():
     for plan_navn in studieplan_dict:
         print(f"---{plan_navn}")
 
-    for emne in emneliste._emner: #T1, for å vite hvilke emner som finnes før du velger. 
-        print(f"{emne.kode}")
+    #for emne in emneliste._emner: #T1, for å vite hvilke emner som finnes før du velger. 
+        #print(f"{emne.kode}")
 
     plan_navn = input("Velg studieplan")
     if plan_navn not in studieplan_dict:
