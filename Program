@@ -25,8 +25,8 @@ class studieplan:
         """
 
     def __str__(self):
-        return f"{self.ID}, {self.tittel}, \n self.semester[1] \n self.semester[2] \n self.semester[3] \n self.semester[4] \n self.semester[5] \n self.semester[6]"
-
+        return f"{self.ID}, {self.tittel}, {self.semestre}"
+    
     def fjern(self, nr, emne): #Metode for å fjrene et emne fra studieplanen.
         self.semester[nr].remove(emne)
         print(f"Fjernet {emne} fra semester {nr}.")
@@ -183,18 +183,27 @@ def valg4():
         print(f"{emne.kode} {emne.navn} {emne.stp} studiepoeng {emne.semester}")
 
 def valg5():
-    ID = input("Skriv inn ID:")
-    tittel = input("Skriv inn tittel:")
+    ID = input("Skriv inn ID: ")
+    tittel = input("Skriv inn tittel: ")
     studieplan_ny = studieplan(ID, tittel)
     studieplan_dict[tittel] =  studieplan_ny
     print(f"Opprettet studieplan {tittel}.")
 
 def valg6():
-    print(studieplan_dict)
-    plan = str(input("Velg studieplan:"))
-    print(f"\n{plan}:")
-    for key, value in studieplan_dict[plan].semestre.items():
-        print(f"\nSemester {key}: {value}")
+    while True:    
+        print("Studieplaner: ")
+        for navn, plan in studieplan_dict.items():
+            print(f"{navn}")
+        try:
+            studieplan_valg = input("Velg studieplan: ")
+            print(f"\n{studieplan_valg}: ")
+            for key, value in studieplan_dict[studieplan_valg].semestre.items():
+                print(f"\nSemester {key}: {str(value)}")
+            break
+        except KeyError:
+            print("Velg en studieplan fra lista. Prøv på nytt.")
+        
+
 
 def valg7():
     plan = input("Sjekk studieplan:")
