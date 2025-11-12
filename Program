@@ -6,7 +6,8 @@ class emne:
         self.stp = stp
         
     def __str__(self):
-        return f"{self.navn}, {self.kode}, {self.semester}, {self.stp}"            
+        return f"{self.navn} ({self.kode}) - {self.stp} studiepoeng, Semester: {self.semester}"
+           
         
 class studieplan:
     def __init__(self, ID, tittel):
@@ -35,7 +36,7 @@ class studieplan:
         try:
             nr = int(input("Oppgi semester (1-6):"))
         except: ValueError("Velg et semester 1-6.")
-        self.semester[nr].append(emne)
+        self.semestre[nr].append(emne)
         print(f"La til {emne} i studieplanen.")
 
 class emneregister:
@@ -189,6 +190,32 @@ def valg5():
     studieplan_dict[tittel] =  studieplan_ny
     print(f"Opprettet studieplan {tittel}.")
 
+
+
+
+
+
+def valg6():
+    while True:    
+        print("Studieplaner: ")
+        for navn, plan in studieplan_dict.items():
+            print(f"{navn}")
+        try:
+            studieplan_valg = input("Velg studieplan: ")
+            print(f"\n{studieplan_valg}: ")
+            for key, value in studieplan_dict[studieplan_valg].semestre.items():
+                # Print semester details
+                print(f"\nSemester {key}:")
+                if value:
+                    for emne in value:
+                        print(f"  - {emne}")
+                else:
+                    print("  - Ingen emner i dette semester.")
+            break
+        except KeyError:
+            print("Velg en studieplan fra lista. Prøv på nytt.")
+
+"""
 def valg6():
     while True:    
         print("Studieplaner: ")
@@ -203,7 +230,7 @@ def valg6():
         except KeyError:
             print("Velg en studieplan fra lista. Prøv på nytt.")
         
-
+"""
 
 def valg7():
     plan = input("Sjekk studieplan:")
