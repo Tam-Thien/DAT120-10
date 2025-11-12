@@ -1,3 +1,4 @@
+import csv as csv
 class emne:
     def __init__(self, kode, semester, navn, stp):
         self.kode = kode
@@ -131,6 +132,10 @@ def valg2():
     except ValueError:
         print("Skriv et gyldig tall takk")
         return
+    semester_sesong = {1:"H", 2:"V", 3:"H", 4:"V", 5:"H", 6:"V"}
+    if emne_obj.semester != semester_sesong[semester]:
+        print(f"Kan ikke legge {emne_obj.navn}  i semester {semester} fordi det er feil sesong")
+        return
     studieplan_dict[plan_navn].semestre[semester].append(emne_obj)
     print(f"da ble {emne_obj.navn} ({emne_obj.kode}) lagt til i semester {semester} på {plan_navn}.")
 
@@ -217,29 +222,130 @@ def valg6():
 
 
 def valg7():
-    plan = input("Sjekk studieplan:")
+    plan = input("Sjekk studieplan: ")
+    if plan not in studieplan_dict:
+        print("Fant ikke studieplanen.")
+        return
+
     print("\nSjekker om studieplanen er gyldig...")
     ugyldige_semestere = []
 
-    for key, value in studieplan_dict[plan].semestre.items():
-        total_studiepoeng = 0
-        for emne in value:
-            #studieplan_dict[plan][stp] poeng = 
-            poeng = emne.stp
-            if emne:
-                total_studiepoeng += emne["studiepoeng"]
-            else:
-                print("Semesteret er tomt.")
-        
+    for semester_nr, emner_i_semester in studieplan_dict[plan].semestre.items():
+        total_studiepoeng = sum(e.stp for e in emner_i_semester)
         if total_studiepoeng != 30:
-            ugyldige_semestere.append(key)
+            ugyldige_semestere.append((semester_nr, total_studiepoeng))
 
     if not ugyldige_semestere:
         print("Studieplanen er gyldig. Hvert semester har 30 studiepoeng.")
     else:
         print("Studieplanen er ikke gyldig.")
-        for semester in ugyldige_semestere:
-            print(f"Semester {semester} har {poeng} studiepoeng.")
+        for semester, poengsum in ugyldige_semestere:
+            print(f"Semester {semester} har {poengsum} studiepoeng "
+                  f"(mangler {30 - poengsum} studiepoeng).")
+
+def valg8():
+    if not studieplan_dict:
+        print("Uff da ingen studieplaner enda")
+        return
+    emnekode = input("skriv inn emnet du vil sjekke")
+    emne_obj = emneliste.finn(emnekode)
+    
+    if not emne_obj :
+        print("uff da fant ikke emnet du lette etter")
+        return
+    
+    planer_m_emnet = []
+    
+    for plan_navn, plan in studieplan_dict.items():
+        emner_i_plan = sum(plan.semestre.values(),[])
+        
+        if emne_obj in emner_i_plan:
+            planer_m_emnet.append(plan_navn)
+            
+        if planer_m_emnet:
+            print(f"Emnet {emne_obj.navn} finnes i studieplanene:")
+            for navn in planer_m_emnet:
+                print(f"--- {navn}")
+        else:
+            print("emnet er ikke i noen studieplaner enda :-(")
+            
+def valg9():
+    """Lagrer emner og studieplaner til CSV-filer."""
+    if not studieplan_dict:
+        print("Ingen studieplan tilgjengelig for lagring!")
+        return  # stopper her hvis ingen planer finnes
+
+    try:
+        emne_filnavn = input("Filnavn for emner (uten .csv): ").strip() or "emner"
+        plan_filnavn = input("Filnavn for studieplaner (uten .csv): ").strip() or "studieplaner"
+
+        # --- lagre emner ---
+        with open(emne_filnavn + ".csv", "w", newline="", encoding="utf-8") as fil:
+            writer = csv.writer(fil)
+            writer.writerow(["kode", "navn", "semester", "stp"])
+            for e in emneliste._emner:
+                writer.writerow([e.kode, e.navn, e.semester, e.stp])
+        print(f"Lagret {len(emneliste._emner)} emner til '{emne_filnavn}.csv'.")
+
+        # --- lagre studieplaner ---
+        with open(plan_filnavn + ".csv", "w", newline="", encoding="utf-8") as fil:
+            writer = csv.writer(fil)
+            writer.writerow(["tittel", "ID", "semester", "emnekoder"])
+            for plan in studieplan_dict.values():
+                for sem_nr, emner_i_sem in plan.semestre.items():
+                    koder = [e.kode for e in emner_i_sem]
+                    writer.writerow([plan.tittel, plan.ID, sem_nr, ";".join(koder)])
+        print(f"Lagret studieplaner til '{plan_filnavn}.csv'.")
+
+    except Exception as e:
+        print(f"Feil ved lagring: {e}")
+
+
+
+
+def valg10():
+    """Leser inn emner og studieplaner fra CSV-filer."""
+    global emneliste, studieplan_dict
+    try:
+        emne_filnavn = input("Filnavn for emner (uten .csv): ").strip() or "emner"
+        plan_filnavn = input("Filnavn for studieplaner (uten .csv): ").strip() or "studieplaner"
+
+        # --- les emner ---
+        emneliste._emner.clear()
+        with open(emne_filnavn + ".csv", "r", encoding="utf-8") as fil:
+            reader = csv.DictReader(fil)
+            for rad in reader:
+                nytt_emne = emne(
+                    rad["kode"], rad["semester"], rad["navn"], float(rad["stp"])
+                )
+                emneliste._emner.append(nytt_emne)
+        print(f"Leste inn {len(emneliste._emner)} emner fra '{emne_filnavn}.csv'.")
+
+        # --- les studieplaner ---
+        studieplan_dict.clear()
+        with open(plan_filnavn + ".csv", "r", encoding="utf-8") as fil:
+            reader = csv.DictReader(fil)
+            for rad in reader:
+                tittel = rad["tittel"]
+                ID = rad["ID"]
+                sem_nr = int(rad["semester"])
+                emnekoder = rad["emnekoder"].split(";") if rad["emnekoder"] else []
+
+                if tittel not in studieplan_dict:
+                    studieplan_dict[tittel] = studieplan(ID, tittel)
+
+                for kode in emnekoder:
+                    fag = emneliste.finn(kode)
+                    if fag:
+                        studieplan_dict[tittel].semestre[sem_nr].append(fag)
+        print(f"Leste inn {len(studieplan_dict)} studieplan(er) fra '{plan_filnavn}.csv'.")
+
+    except FileNotFoundError:
+        print("Fant ikke en av filene. Sjekk navn og prøv igjen.")
+    except Exception as e:
+        print(f"Feil ved innlesing: {e}")
+
+        
 
 def main():
     while True: #MENY   
