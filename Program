@@ -28,7 +28,7 @@ class studieplan:
         return f"{self.ID}, {self.tittel}, {self.semestre}"
     
     def fjern(self, nr, emne): #Metode for å fjrene et emne fra studieplanen.
-        self.semester[nr].remove(emne)
+        self.semestre[nr].remove(emne)
         print(f"Fjernet {emne} fra semester {nr}.")
 
     def legg_emne_i_studieplan(self, emne): #Metode for å legge til et emne i studieplanen.
@@ -93,7 +93,7 @@ def valg1():
     elif semester_input == 2:
         semester = "V"
     else:
-        print("vennligst velg 1 (for høst) eller 2 (for vår)") # Lag en try except blokk senere..............    
+        print("vennligst velg 1 (for høst) eller 2 (for vår)")  
     try:
         studiepoeng = int(input("Skriv inn studie poeng: "))
     except ValueError:
@@ -183,11 +183,17 @@ def valg4():
         print(f"{emne.kode} {emne.navn} {emne.stp} studiepoeng {emne.semester}")
 
 def valg5():
-    ID = input("Skriv inn ID: ")
-    tittel = input("Skriv inn tittel: ")
-    studieplan_ny = studieplan(ID, tittel)
-    studieplan_dict[tittel] =  studieplan_ny
-    print(f"Opprettet studieplan {tittel}.")
+    while True:
+        
+        ID = input("Skriv inn ID: ")
+        if type(ID) != int:
+            raise ValueError("Skriv et helt tall som ID.")
+        
+        tittel = input("Skriv inn tittel: ")
+        studieplan_ny = studieplan(ID, tittel)
+        studieplan_dict[tittel] =  studieplan_ny
+        print(f"Opprettet studieplan {tittel}.")
+        break
 
 def valg6():
     while True:    
@@ -197,8 +203,13 @@ def valg6():
         try:
             studieplan_valg = input("Velg studieplan: ")
             print(f"\n{studieplan_valg}: ")
-            for key, value in studieplan_dict[studieplan_valg].semestre.items():
-                print(f"\nSemester {key}: {str(value)}")
+            for semester_nr, semester_liste in studieplan_dict[studieplan_valg].semestre.items():
+                print(f"\nSemester {semester_nr}:")
+                if semester_liste:
+                    for emne in semester_liste:
+                        print(f"    - {emne}")
+                else:
+                    print("  - Ingen emner i dette semesteret.")
             break
         except KeyError:
             print("Velg en studieplan fra lista. Prøv på nytt.")
