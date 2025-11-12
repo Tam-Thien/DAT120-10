@@ -114,7 +114,10 @@ def valg2():
     print("Studieplaner")
     for plan_navn in studieplan_dict:
         print(f"---{plan_navn}")
-        
+
+    for emne in emneliste._emner: #T1, for å vite hvilke emner som finnes før du velger. 
+        print(f"{emne.kode}")
+
     plan_navn = input("Velg studieplan")
     if plan_navn not in studieplan_dict:
         print("studieplanenen finnes ikke :-(")
