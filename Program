@@ -115,14 +115,16 @@ def valg2():
     for plan_navn in studieplan_dict:
         print(f"---{plan_navn}")
 
-    #for emne in emneliste._emner: #T1, for å vite hvilke emner som finnes før du velger. 
-        #print(f"{emne.kode}")
 
     plan_navn = input("Velg studieplan")
     if plan_navn not in studieplan_dict:
         print("studieplanenen finnes ikke :-(")
         return
     
+    print("Emner: ")
+    for emne in emneliste._emner: #T1, for å vite hvilke emner som finnes før du velger. 
+        print(f"{emne.kode}")
+
     emnekode = input("skriv inn emnekoden du ønsker å legge til")
     emne_obj = emneliste.finn(emnekode)
     if not emne_obj:
@@ -219,6 +221,10 @@ def valg6():
 
 
 def valg7():
+    print("Studieplaner")
+    for plan_navn in studieplan_dict:
+        print(f"---{plan_navn}")
+    
     plan = input("Sjekk studieplan: ")
     if plan not in studieplan_dict:
         print("Fant ikke studieplanen.")
